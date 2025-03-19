@@ -1,0 +1,33 @@
+# ================================
+# Node.js / React (TypeScript, Tailwind CSS)
+# ================================
+node_modules/
+build/
+dist/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ================================
+# .NET Web API
+# ================================
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# ================================
+# Genel İşletim Sistemi ve Editör Dosyaları
+# ================================
+.DS_Store
+Thumbs.db
+*.swp
+*~
