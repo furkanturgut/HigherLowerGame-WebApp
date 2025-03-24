@@ -18,15 +18,20 @@ namespace api.Repositories
             this._context = context;
         }
 
-        public async Task<Player?> CreatePlayerAsync(Player player)
+        public async Task<Player> CreatePlayerAsync(Player player)
         {
             await _context.Players.AddAsync(player);
             await _context.SaveChangesAsync();
             return player;
         }
 
-        public async Task<Player?> DeletePlayerAsync(Player player)
+        public async Task<Player?> DeletePlayerAsync(int PlayerId)
         {
+            var player = await _context.Players.FindAsync(PlayerId);
+            if (player == null)
+            {
+                return null;
+            }
             _context.Players.Remove(player);
             await _context.SaveChangesAsync();
             return player;
@@ -34,13 +39,13 @@ namespace api.Repositories
 
         public async Task<Player?> GetPlayerByIdAsync(int id)
         {
-            var player = await _context.Players.FindAsync(id);
+            var player = await _context.Players.Include(p=> p.Country).Include(p=> p.Team).FirstOrDefaultAsync(p=> p.Id == id);
             return player;
         }
 
         public async Task<ICollection<Player>> GetPlayersAsync()
         {
-            var players = await _context.Players.ToListAsync();
+            var players = await _context.Players.Include(p=> p.Country).Include(p=> p.Team).ToListAsync();
             return players;
         }
 
