@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.PlayerDtos;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using AutoMapper;
@@ -26,9 +27,9 @@ namespace api.Controllers
             this._mapper= mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery]QueryObject queryObject)
         {
-            var players = await  _playerRepo.GetPlayersAsync();
+            var players = await  _playerRepo.GetPlayersAsync(queryObject);
             return Ok( _mapper.Map<List<GetPlayerDto>>(players));
         }
 
