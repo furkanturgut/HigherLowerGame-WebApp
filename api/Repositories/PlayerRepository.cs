@@ -43,10 +43,24 @@ namespace api.Repositories
             return player;
         }
 
-        public async Task<ICollection<Player>> GetPlayersAsync()
+        public async Task<ICollection<Player>> GetPlayersAsync(QueryObject queryObject)
         {
-            var players = await _context.Players.Include(p=> p.Country).Include(p=> p.Team).ToListAsync();
-            return players;
+            var players = _context.Players.Include(p=> p.Country).Include(p=> p.Team).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(queryObject.CountryName))
+            {
+                players= players.Where(cm=> cm.Country.CountryName.Contains(queryObject.CountryName));
+            }
+            if (!string.IsNullOrWhiteSpace(queryObject.LeagueName))
+            {
+                players=players.Where(ln=> ln.Team.League.LeagueName.Contains(queryObject.LeagueName));
+            }
+
+
+            var skipNumber= (queryObject.PageNumber -1) * queryObject.PageSize;
+            var toList =await players.Skip(skipNumber).Take(queryObject.PageSize).ToListAsync();
+            var random = new Random();
+            var shuffledPlayers= toList.OrderBy(x=> random.Next()).ToList(); 
+            return  shuffledPlayers;
         }
 
         public async Task<bool> PlayerExists(int id)
