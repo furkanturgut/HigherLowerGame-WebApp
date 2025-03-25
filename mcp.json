@@ -1,0 +1,9 @@
+{
+  "servers": [
+    {
+      "name": "Figma",
+      "url": "http://localhost:3333/sse",
+      "type": "sse"
+    }
+  ]
+} 
